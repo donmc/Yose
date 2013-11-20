@@ -32,23 +32,31 @@ public class PrimeFactorsServlet extends HttpServlet {
 				returnString = "empty";
 				
 			} else if (numbers.length > 1) {
+
+				returnString = createJsonArray(numbers);
 				
-				for (String number : numbers) {
-					JSONArray jsonArray = new JSONArray();	
-					JSONObject jsonObject = createJsonObject(number);
-					jsonArray.put(jsonObject);
-					returnString = jsonArray.toString();
-				}
 			} else {
+				
 				returnString = createJsonObject(numbers[0]).toString();
-			
 			}
+			
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		
 		response.setContentType("application/json");
 		response.getWriter().print(returnString);
+	}
+
+	private String createJsonArray(String[] numbers) throws JSONException {
+		String returnString;
+		JSONArray jsonArray = new JSONArray();	
+		for (String number : numbers) {
+			JSONObject jsonObject = createJsonObject(number);
+			jsonArray.put(jsonObject);
+		}
+		returnString = jsonArray.toString();
+		return returnString;
 	}
 
 	private JSONObject createJsonObject(String number) throws JSONException {
